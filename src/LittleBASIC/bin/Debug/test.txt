@@ -1,1 +1,4 @@
 PRINT EXP(4)
+' This is a comment
+
+PRINT "test"

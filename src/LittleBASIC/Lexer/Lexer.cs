@@ -28,6 +28,8 @@ namespace LittleBASIC.Lexer
                     result.Add(scanData());
                 else if ((char)peekChar() == '\"')
                     result.Add(scanString());
+                else if ((char)peekChar() == '\'')
+                    scanComment();
                 else if ((char)peekChar() == '(' || ((char)peekChar() == ')'))
                     result.Add(new Token(TokenType.Parentheses, ((char)readChar()).ToString()));
                 else if ((char)peekChar() == ',')
@@ -77,6 +79,14 @@ namespace LittleBASIC.Lexer
             readChar();
 
             return new Token(TokenType.String, result);
+        }
+
+        private void scanComment()
+        {
+            readChar();
+
+            while (peekChar() != '\n')
+                readChar();
         }
 
         private void whiteSpace()

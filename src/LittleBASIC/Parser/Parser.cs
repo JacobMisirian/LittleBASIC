@@ -11,9 +11,9 @@ namespace LittleBASIC.Parser
     public class Parser
     {
         private List<Token> tokens { get; set; }
-        private int position = 0;
 
-        public bool EndOfStream { get { return tokens.Count <= position; } }
+        public bool EndOfStream { get { return tokens.Count <= Position; } }
+        public int Position = 0;
 
         public Parser(List<Token> tokens)
         {
@@ -31,19 +31,19 @@ namespace LittleBASIC.Parser
 
         public bool MatchToken(TokenType clazz)
         {
-            return position < tokens.Count && tokens[position].TokenType == clazz;
+            return Position < tokens.Count && tokens[Position].TokenType == clazz;
         }
 
         public bool MatchToken(TokenType clazz, string value)
         {
-            return position < tokens.Count && tokens[position].TokenType == clazz && ((string)tokens[position].Value).ToUpper() == value.ToUpper();
+            return Position < tokens.Count && tokens[Position].TokenType == clazz && ((string)tokens[Position].Value).ToUpper() == value.ToUpper();
         }
 
         public bool AcceptToken(TokenType clazz)
         {
             if (MatchToken(clazz))
             {
-                position++;
+                Position++;
                 return true;
             }
 
@@ -54,7 +54,7 @@ namespace LittleBASIC.Parser
         {
             if (MatchToken(clazz, value.ToUpper()))
             {
-                position++;
+                Position++;
                 return true;
             }
 
@@ -66,7 +66,7 @@ namespace LittleBASIC.Parser
             if (!MatchToken(clazz))
                 throw new Exception("Tokens did not match. Expected " + clazz);
 
-            return tokens[position++];
+            return tokens[Position++];
         }
 
         public Token ExpectToken(TokenType clazz, string value)
@@ -74,13 +74,13 @@ namespace LittleBASIC.Parser
             if (!MatchToken(clazz, value.ToUpper()))
                 throw new Exception("Tokens did not match. Expected " + clazz + " of value " + value);
 
-            return tokens[position++];
+            return tokens[Position++];
         }
 
         public Token CurrentToken(int n = 0)
         {
-            if (tokens.Count > position + n)
-                return tokens[position + n];
+            if (tokens.Count > Position + n)
+                return tokens[Position + n];
 
             return new Token(TokenType.Identifier, "");
         }
