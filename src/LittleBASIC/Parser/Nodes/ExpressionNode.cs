@@ -158,6 +158,13 @@ namespace LittleBASIC.Parser.Nodes
 
                 return block;
             }
+            else if (parser.AcceptToken(TokenType.Identifier, "END"))
+            {
+                if (parser.MatchToken(TokenType.Number))
+                    return new EndNode(Convert.ToInt32(parser.ExpectToken(TokenType.Number).Value));
+                else
+                    return new EndNode();
+            }
             else if (parser.MatchToken(TokenType.String))
                 return new StringNode((string)parser.ExpectToken(TokenType.String).Value);
             else if (parser.MatchToken(TokenType.Identifier))

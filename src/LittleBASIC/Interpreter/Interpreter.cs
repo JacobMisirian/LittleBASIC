@@ -69,6 +69,14 @@ namespace LittleBASIC.Interpreter
 
                 Variables.Add(variable, Console.ReadLine());
             }
+            else if (node is EndNode)
+            {
+                EndNode enode = (EndNode)node;
+                if (enode.Children.Count <= 0)
+                    Environment.Exit(0);
+
+                Environment.Exit(enode.ExitCode);
+            }
             else
                 evaluateNode(node);
         }
