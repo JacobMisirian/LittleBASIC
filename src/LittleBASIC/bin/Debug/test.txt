@@ -1,1 +1,5 @@
-print "Je;;o"
+let x = 0
+while x < 10 do
+x = x + 1
+print x
+wend

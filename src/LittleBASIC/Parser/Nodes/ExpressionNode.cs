@@ -151,10 +151,10 @@ namespace LittleBASIC.Parser.Nodes
                 CodeBlockNode block = new CodeBlockNode();
                 parser.ExpectToken(TokenType.Identifier, "DO");
 
-                while (!parser.EndOfStream && !parser.MatchToken(TokenType.Identifier, "ENDWHILE"))
+                while (!parser.EndOfStream && !parser.MatchToken(TokenType.Identifier, "WEND"))
                     block.Children.Add(StatementNode.Parse(parser));
 
-                parser.ExpectToken(TokenType.Identifier, "ENDWHILE");
+                parser.ExpectToken(TokenType.Identifier, "WEND");
 
                 return block;
             }
