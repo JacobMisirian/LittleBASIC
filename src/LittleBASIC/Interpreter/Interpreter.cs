@@ -14,7 +14,8 @@ namespace LittleBASIC.Interpreter
         public Dictionary<string, object> Variables = new Dictionary<string, object>
         {
             {"TRUE", true },
-            {"FALSE", false }
+            {"FALSE", false },
+            {"NULL", null }
         };
 
         public Dictionary<string, int> Labels = new Dictionary<string, int>();
