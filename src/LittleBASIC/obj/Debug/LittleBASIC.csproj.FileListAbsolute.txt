@@ -4,3 +4,9 @@ C:\Users\Reagan\LittleBASIC\LittleBASIC\bin\Debug\LittleBASIC.pdb
 C:\Users\Reagan\LittleBASIC\LittleBASIC\obj\Debug\LittleBASIC.csprojResolveAssemblyReference.cache
 C:\Users\Reagan\LittleBASIC\LittleBASIC\obj\Debug\LittleBASIC.exe
 C:\Users\Reagan\LittleBASIC\LittleBASIC\obj\Debug\LittleBASIC.pdb
+C:\Users\Reagan\Documents\Visual Studio 2015\Projects\LittleBASIC\src\LittleBASIC\bin\Debug\LittleBASIC.exe.config
+C:\Users\Reagan\Documents\Visual Studio 2015\Projects\LittleBASIC\src\LittleBASIC\obj\Debug\LittleBASIC.exe
+C:\Users\Reagan\Documents\Visual Studio 2015\Projects\LittleBASIC\src\LittleBASIC\obj\Debug\LittleBASIC.pdb
+C:\Users\Reagan\Documents\Visual Studio 2015\Projects\LittleBASIC\src\LittleBASIC\bin\Debug\LittleBASIC.exe
+C:\Users\Reagan\Documents\Visual Studio 2015\Projects\LittleBASIC\src\LittleBASIC\bin\Debug\LittleBASIC.pdb
+C:\Users\Reagan\Documents\Visual Studio 2015\Projects\LittleBASIC\src\LittleBASIC\obj\Debug\LittleBASIC.csprojResolveAssemblyReference.cache

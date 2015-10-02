@@ -12,7 +12,6 @@ namespace LittleBASIC
     {
         static void Main(string[] args)
         {
-
             new Interpreter.Interpreter(new Parser.Parser(new Lexer.Lexer(File.ReadAllText("test.txt")).Tokenize()).Parse()).Interpret();
 
             Console.ReadKey();

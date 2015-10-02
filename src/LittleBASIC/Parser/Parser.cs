@@ -77,9 +77,9 @@ namespace LittleBASIC.Parser
             return tokens[position++];
         }
 
-        public Token CurrentToken()
+        public Token CurrentToken(int n = 0)
         {
-            return tokens[position];
+            return tokens[position + n];
         }
     }
 }

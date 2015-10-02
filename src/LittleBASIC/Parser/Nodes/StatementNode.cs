@@ -16,6 +16,12 @@ namespace LittleBASIC.Parser.Nodes
                 return WhileNode.Parse(parser);
             else if (parser.MatchToken(Lexer.TokenType.Identifier, "PRINT"))
                 return PrintNode.Parse(parser);
+            else if (parser.MatchToken(Lexer.TokenType.Identifier, "INPUT"))
+                return InputNode.Parse(parser);
+            else if (parser.MatchToken(Lexer.TokenType.Identifier, "LET"))
+                return LetNode.Parse(parser);
+            else if (parser.MatchToken(Lexer.TokenType.Identifier, "GOTO"))
+                return GotoNode.Parse(parser);
             else
                 return ExpressionNode.Parse(parser);
         }

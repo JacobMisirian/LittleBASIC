@@ -148,7 +148,16 @@ namespace LittleBASIC.Parser.Nodes
             else if (parser.MatchToken(TokenType.String))
                 return new StringNode((string)parser.ExpectToken(TokenType.String).Value);
             else if (parser.MatchToken(TokenType.Identifier))
+            {
+                if ((string)parser.CurrentToken(1).Value == ":")
+                {
+                    LabelNode lnode = new LabelNode((string)parser.ExpectToken(TokenType.Identifier).Value);
+                    parser.ExpectToken(TokenType.Identifier, ":");
+                    return lnode;
+                }
+
                 return new IdentifierNode((string)parser.ExpectToken(TokenType.Identifier).Value);
+            }
             else
                 throw new Exception("Unexpected " + parser.CurrentToken().TokenType + " in Parser: " + parser.CurrentToken().Value + ".");
         }

@@ -51,7 +51,11 @@
     <Compile Include="Parser\Nodes\CodeBlockNode.cs" />
     <Compile Include="Parser\Nodes\ConditionalNode.cs" />
     <Compile Include="Parser\Nodes\ExpressionNode.cs" />
+    <Compile Include="Parser\Nodes\GotoNode.cs" />
     <Compile Include="Parser\Nodes\IdentifierNode.cs" />
+    <Compile Include="Parser\Nodes\InputNode.cs" />
+    <Compile Include="Parser\Nodes\LabelNode.cs" />
+    <Compile Include="Parser\Nodes\LetNode.cs" />
     <Compile Include="Parser\Nodes\NumberNode.cs" />
     <Compile Include="Parser\Nodes\PrintNode.cs" />
     <Compile Include="Parser\Nodes\StatementNode.cs" />

@@ -11,8 +11,10 @@ namespace LittleBASIC.Interpreter
     public class Interpreter
     {
         public Dictionary<string, object> Variables = new Dictionary<string, object>();
+        public Dictionary<string, int> Labels = new Dictionary<string, int>();
 
         private AstNode code { get; set; }
+        private int position { get; set; }
 
         public Interpreter(AstNode code)
         {
@@ -21,8 +23,8 @@ namespace LittleBASIC.Interpreter
 
         public void Interpret()
         {
-            for (int x = 0; x < code.Children.Count; x++)
-                executeStatement(code.Children[x]);
+            for (position = 0; position < code.Children.Count; position++)
+                executeStatement(code.Children[position]);
         }
 
         private void executeStatement(AstNode node)
@@ -47,8 +49,24 @@ namespace LittleBASIC.Interpreter
                 while ((bool)evaluateNode(wnode.Predicate))
                     executeStatement(wnode.Body);
             }
+            else if (node is LabelNode)
+            {
+                string label = ((LabelNode)node).Label;
+                if (Labels.ContainsKey(label))
+                    Labels.Remove(label);
+
+                Labels.Add(label, position);
+            }
             else if (node is PrintNode)
                 Console.WriteLine(evaluateNode(((PrintNode)node).Value));
+            else if (node is InputNode)
+            {
+                string variable = ((IdentifierNode)((InputNode)node).Variable).Identifier;
+                if (Variables.ContainsKey(variable))
+                    Variables.Remove(variable);
+
+                Variables.Add(variable, Console.ReadLine());
+            }
             else
                 evaluateNode(node);
         }
@@ -68,6 +86,17 @@ namespace LittleBASIC.Interpreter
                 return ((StringNode)node).Value;
             else if (node is BinaryOpNode)
                 return interpretBinaryOperation((BinaryOpNode)node);
+            else if (node is LetNode)
+            {
+                LetNode lnode = (LetNode)node;
+                string variable = ((IdentifierNode)lnode.Variable).Identifier;
+                object data = evaluateNode(lnode.Data);
+                if (Variables.ContainsKey(variable))
+                    throw new Exception("Variable " + variable + " already has been declared!");
+                Variables.Add(variable, data);
+
+                return data;
+            }
             else
                 throw new Exception("Unknown node " + node.ToString() + "  " + node.GetType());
         }
@@ -76,8 +105,26 @@ namespace LittleBASIC.Interpreter
         {
             switch (node.BinaryOp)
             {
+                case BinaryOperation.Assignment:
+                    if (!(node.Left is IdentifierNode))
+                        throw new Exception("Must be an identifier!");
+                    object right = evaluateNode(node.Right);
+                    string left = ((IdentifierNode)node.Left).Identifier;
+
+                    if (!Variables.ContainsKey(left))
+                        throw new Exception("Variable " + left + " is being used before it is declared!");
+
+                    Variables.Remove(left);
+                    Variables.Add(left, right);
+
+                    return right;
                 case BinaryOperation.Addition:
-                    return Convert.ToDouble(evaluateNode(node.Left)) + Convert.ToDouble(evaluateNode(node.Right));
+                    object addLeft = evaluateNode(node.Left);
+                    object addRight = evaluateNode(node.Right);
+                    if (addLeft is string || addRight is string)
+                        return (string)addLeft + (string)addRight;
+                    else
+                        return Convert.ToDouble(addLeft) + Convert.ToDouble(addRight);
                 case BinaryOperation.Subtraction:
                     return Convert.ToDouble(evaluateNode(node.Left)) - Convert.ToDouble(evaluateNode(node.Right));
                 case BinaryOperation.Division:
@@ -93,18 +140,9 @@ namespace LittleBASIC.Interpreter
                 case BinaryOperation.GreaterThan:
                     return Convert.ToDouble(evaluateNode(node.Left)) > Convert.ToDouble(evaluateNode(node.Right));
                 case BinaryOperation.Not:
-                    return evaluateNode(node.Left).GetHashCode() != evaluateNode(node.Right).GetHashCode();
-                case BinaryOperation.Assignment:
-                    if (!(node.Left is IdentifierNode))
-                        throw new Exception("Must be an identifier!");
-                    object right = evaluateNode(node.Right);
-                    string left = ((IdentifierNode)node.Left).Identifier;
-                    if (Variables.ContainsKey(left))
-                        Variables.Remove(left);
-                    Variables.Add(left, right);
-                    return right;
+                    return !((bool)interpretBinaryOperation(new BinaryOpNode(node.BinaryOp, node.Left, node.Right)));
                 default:
-                    throw new NotImplementedException("Unknown binary operation");
+                    throw new NotImplementedException("Unknown binary operation: " + node.Left + " " + node.BinaryOp + " " +node.Right);
             }
         }
     }

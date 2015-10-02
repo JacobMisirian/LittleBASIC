@@ -1,6 +1,9 @@
-X = 0
-WHILE X < 10
-DO
-PRINT X
+PRINT "Enter your name: "
+INPUT name
+PRINT "Welcome: " + name
+PRINT "Here are the numbers from 1 to 10: "
+LET X = 0
+WHILE X < 10 DO
 X = X + 1
+PRINT X
 ENDWHILE
