@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using LittleBASIC.Parser;
@@ -19,6 +20,9 @@ namespace LittleBASIC.Interpreter
         public Interpreter(AstNode code)
         {
             this.code = code;
+            foreach (Dictionary<string, InternalFunction> entries in getFunctions())
+                foreach (KeyValuePair<string, InternalFunction> entry in entries)
+                    Variables.Add(entry.Key, entry.Value);
         }
 
         public void Interpret()
@@ -90,6 +94,17 @@ namespace LittleBASIC.Interpreter
                     return Variables[idNode.Identifier];
                 throw new Exception("Variable " + idNode.Identifier + " does not exist in dictionary!");
             }
+            else if (node is FunctionCallNode)
+            {
+                FunctionCallNode fnode = (FunctionCallNode)node;
+                IFunction target = evaluateNode(fnode.Target) as IFunction;
+                if (target == null)
+                    throw new Exception("Attempt to run a non-valid function!");
+                object[] arguments = new object[fnode.Arguments.Children.Count];
+                for (int x = 0; x < fnode.Arguments.Children.Count; x++)
+                    arguments[x] = evaluateNode(fnode.Arguments.Children[x]);
+                return target.Invoke(arguments);
+            }
             else if (node is NumberNode)
                 return ((NumberNode)node).Value;
             else if (node is StringNode)
@@ -154,6 +169,27 @@ namespace LittleBASIC.Interpreter
                 default:
                     throw new NotImplementedException("Unknown binary operation: " + node.Left + " " + node.BinaryOp + " " +node.Right);
             }
+        }
+
+        private List<Dictionary<string, InternalFunction>> getFunctions(string path = "")
+        {
+            List<Dictionary<string, InternalFunction>> result = new List<Dictionary<string, InternalFunction>>();
+            Assembly testAss;
+
+            if (path != "")
+                testAss = Assembly.LoadFrom(path);
+            else
+                testAss = Assembly.GetExecutingAssembly();
+
+            foreach (Type type in testAss.GetTypes())
+            {
+                if (type.GetInterface(typeof(ILibrary).FullName) != null)
+                {
+                    ILibrary ilib = (ILibrary)Activator.CreateInstance(type);
+                    result.Add(ilib.GetFunctions());
+                }
+            }
+            return result;
         }
     }
 }

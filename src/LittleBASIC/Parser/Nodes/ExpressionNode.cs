@@ -82,18 +82,18 @@ namespace LittleBASIC.Parser.Nodes
 
         private static AstNode parseComparison(Parser parser)
         {
-            AstNode left = parseTerm(parser);
+            AstNode left = parseFunctionCall(parser);
             while (parser.MatchToken(TokenType.Comparison))
             {
                 switch ((string)parser.CurrentToken().Value)
                 {
                     case ">":
                         parser.AcceptToken(TokenType.Comparison);
-                        left = new BinaryOpNode(BinaryOperation.GreaterThan, left, parseTerm(parser));
+                        left = new BinaryOpNode(BinaryOperation.GreaterThan, left, parseFunctionCall(parser));
                         continue;
                     case "<":
                         parser.AcceptToken(TokenType.Comparison);
-                        left = new BinaryOpNode(BinaryOperation.LessThan, left, parseTerm(parser));
+                        left = new BinaryOpNode(BinaryOperation.LessThan, left, parseFunctionCall(parser));
                         continue;
                     default:
                         break;
@@ -101,6 +101,18 @@ namespace LittleBASIC.Parser.Nodes
                 break;
             }
             return left;
+        }
+
+        private static AstNode parseFunctionCall(Parser parser)
+        {
+            return parseFunctionCall(parser, parseTerm(parser));
+        }
+        private static AstNode parseFunctionCall(Parser parser, AstNode left)
+        {
+            if (parser.MatchToken(TokenType.Parentheses, "("))
+                return parseFunctionCall(parser, new FunctionCallNode(left, ArgListNode.Parse(parser)));
+            else
+                return left;
         }
 
         private static AstNode parseTerm(Parser parser)

@@ -43,15 +43,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Functions\StandardLibrary.cs" />
+    <Compile Include="Interpreter\IFunction.cs" />
+    <Compile Include="Interpreter\ILibrary.cs" />
+    <Compile Include="Interpreter\InternalFunction.cs" />
     <Compile Include="Interpreter\Interpreter.cs" />
     <Compile Include="Lexer\Lexer.cs" />
     <Compile Include="Lexer\Token.cs" />
     <Compile Include="Parser\AstNode.cs" />
+    <Compile Include="Parser\Nodes\ArgListNode.cs" />
     <Compile Include="Parser\Nodes\BinaryOpNode.cs" />
     <Compile Include="Parser\Nodes\CodeBlockNode.cs" />
     <Compile Include="Parser\Nodes\ConditionalNode.cs" />
     <Compile Include="Parser\Nodes\EndNode.cs" />
     <Compile Include="Parser\Nodes\ExpressionNode.cs" />
+    <Compile Include="Parser\Nodes\FunctionCallNode.cs" />
     <Compile Include="Parser\Nodes\GotoNode.cs" />
     <Compile Include="Parser\Nodes\IdentifierNode.cs" />
     <Compile Include="Parser\Nodes\InputNode.cs" />
@@ -69,6 +75,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
