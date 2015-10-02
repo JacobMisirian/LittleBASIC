@@ -57,6 +57,8 @@ namespace LittleBASIC.Interpreter
 
                 Labels.Add(label, position);
             }
+            else if (node is GotoNode)
+                position = Labels[((GotoNode)node).Position];
             else if (node is PrintNode)
                 Console.WriteLine(evaluateNode(((PrintNode)node).Value));
             else if (node is InputNode)

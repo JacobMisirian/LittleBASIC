@@ -8,9 +8,9 @@ namespace LittleBASIC.Parser.Nodes
 {
     public class GotoNode: AstNode
     {
-        public double Position { get; private set; }
+        public string Position { get; private set; }
 
-        public GotoNode(double position)
+        public GotoNode(string position)
         {
             Position = position;
         }
@@ -19,7 +19,14 @@ namespace LittleBASIC.Parser.Nodes
         {
             parser.ExpectToken(Lexer.TokenType.Identifier, "GOTO");
 
-            return new GotoNode(((NumberNode)ExpressionNode.Parse(parser)).Value);
+            AstNode position = ExpressionNode.Parse(parser);
+
+            if (position is NumberNode)
+                return new GotoNode(Convert.ToString(((NumberNode)position).Value));
+            else if (position is IdentifierNode)
+                return new GotoNode(((IdentifierNode)position).Identifier);
+            else
+                throw new Exception("Unknown type " + parser.CurrentToken().TokenType + " " + parser.CurrentToken().Value);
         }
     }
 }

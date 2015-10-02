@@ -105,7 +105,20 @@ namespace LittleBASIC.Parser.Nodes
 
         private static AstNode parseTerm(Parser parser)
         {
-            if (parser.MatchToken(TokenType.Number))
+            if ((string)parser.CurrentToken(1).Value == ":")
+            {
+                LabelNode lnode;
+                if (parser.MatchToken(TokenType.Identifier))
+                    lnode = new LabelNode((string)parser.ExpectToken(TokenType.Identifier).Value);
+                else if (parser.MatchToken(TokenType.Number))
+                    lnode = new LabelNode(Convert.ToString(parser.ExpectToken(TokenType.Number).Value));
+                else
+                    throw new Exception("Unknown label type " + parser.CurrentToken().TokenType + " " + parser.CurrentToken().Value);
+
+                parser.ExpectToken(TokenType.Identifier, ":");
+                return lnode;
+            }
+            else if (parser.MatchToken(TokenType.Number))
                 return new NumberNode(Convert.ToDouble(parser.ExpectToken(TokenType.Number).Value));
             else if (parser.AcceptToken(TokenType.Parentheses, "("))
             {
@@ -148,16 +161,7 @@ namespace LittleBASIC.Parser.Nodes
             else if (parser.MatchToken(TokenType.String))
                 return new StringNode((string)parser.ExpectToken(TokenType.String).Value);
             else if (parser.MatchToken(TokenType.Identifier))
-            {
-                if ((string)parser.CurrentToken(1).Value == ":")
-                {
-                    LabelNode lnode = new LabelNode((string)parser.ExpectToken(TokenType.Identifier).Value);
-                    parser.ExpectToken(TokenType.Identifier, ":");
-                    return lnode;
-                }
-
                 return new IdentifierNode((string)parser.ExpectToken(TokenType.Identifier).Value);
-            }
             else
                 throw new Exception("Unexpected " + parser.CurrentToken().TokenType + " in Parser: " + parser.CurrentToken().Value + ".");
         }

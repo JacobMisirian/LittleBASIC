@@ -32,6 +32,8 @@ namespace LittleBASIC.Lexer
                     result.Add(new Token(TokenType.Parentheses, ((char)readChar()).ToString()));
                 else if ((char)peekChar() == ',')
                     result.Add(new Token(TokenType.Comma, ((char)readChar()).ToString()));
+                else if ((char)peekChar() == ':')
+                    result.Add(new Token(TokenType.Identifier, ((char)readChar()).ToString()));
                 else if ((char)peekChar() == '=' && (char)peekChar(1) == '=')
                     result.Add(new Token(TokenType.Comparison, (char)readChar() + "" + (char)readChar()));
                 else if ("+-/*%".Contains((((char)peekChar()).ToString())))
