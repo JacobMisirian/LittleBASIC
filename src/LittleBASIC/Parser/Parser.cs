@@ -36,7 +36,7 @@ namespace LittleBASIC.Parser
 
         public bool MatchToken(TokenType clazz, string value)
         {
-            return position < tokens.Count && tokens[position].TokenType == clazz && (string)tokens[position].Value == value;
+            return position < tokens.Count && tokens[position].TokenType == clazz && ((string)tokens[position].Value).ToUpper() == value.ToUpper();
         }
 
         public bool AcceptToken(TokenType clazz)
@@ -52,7 +52,7 @@ namespace LittleBASIC.Parser
 
         public bool AcceptToken(TokenType clazz, string value)
         {
-            if (MatchToken(clazz, value))
+            if (MatchToken(clazz, value.ToUpper()))
             {
                 position++;
                 return true;
@@ -71,7 +71,7 @@ namespace LittleBASIC.Parser
 
         public Token ExpectToken(TokenType clazz, string value)
         {
-            if (!MatchToken(clazz, value))
+            if (!MatchToken(clazz, value.ToUpper()))
                 throw new Exception("Tokens did not match. Expected " + clazz + " of value " + value);
 
             return tokens[position++];
@@ -79,7 +79,10 @@ namespace LittleBASIC.Parser
 
         public Token CurrentToken(int n = 0)
         {
-            return tokens[position + n];
+            if (tokens.Count > position + n)
+                return tokens[position + n];
+
+            return new Token(TokenType.Identifier, "");
         }
     }
 }
