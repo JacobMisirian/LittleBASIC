@@ -11,7 +11,12 @@ namespace LittleBASIC.Interpreter
 {
     public class Interpreter
     {
-        public Dictionary<string, object> Variables = new Dictionary<string, object>();
+        public Dictionary<string, object> Variables = new Dictionary<string, object>
+        {
+            {"TRUE", true },
+            {"FALSE", false }
+        };
+
         public Dictionary<string, int> Labels = new Dictionary<string, int>();
 
         private AstNode code { get; set; }
@@ -90,9 +95,9 @@ namespace LittleBASIC.Interpreter
             if (node is IdentifierNode)
             {
                 IdentifierNode idNode = (IdentifierNode)node;
-                if (Variables.ContainsKey(idNode.Identifier))
-                    return Variables[idNode.Identifier];
-                throw new Exception("Variable " + idNode.Identifier + " does not exist in dictionary!");
+                if (Variables.ContainsKey(idNode.Identifier.ToUpper()))
+                    return Variables[idNode.Identifier.ToUpper()];
+                throw new Exception("Variable " + idNode.Identifier.ToUpper() + " does not exist in dictionary!");
             }
             else if (node is FunctionCallNode)
             {
@@ -116,9 +121,9 @@ namespace LittleBASIC.Interpreter
                 LetNode lnode = (LetNode)node;
                 string variable = ((IdentifierNode)lnode.Variable).Identifier;
                 object data = evaluateNode(lnode.Data);
-                if (Variables.ContainsKey(variable))
-                    throw new Exception("Variable " + variable + " already has been declared!");
-                Variables.Add(variable, data);
+                if (Variables.ContainsKey(variable.ToUpper()))
+                    throw new Exception("Variable " + variable.ToUpper() + " already has been declared!");
+                Variables.Add(variable.ToUpper(), data);
 
                 return data;
             }
@@ -134,7 +139,7 @@ namespace LittleBASIC.Interpreter
                     if (!(node.Left is IdentifierNode))
                         throw new Exception("Must be an identifier!");
                     object right = evaluateNode(node.Right);
-                    string left = ((IdentifierNode)node.Left).Identifier;
+                    string left = ((IdentifierNode)node.Left).Identifier.ToUpper();
 
                     if (!Variables.ContainsKey(left))
                         throw new Exception("Variable " + left + " is being used before it is declared!");
