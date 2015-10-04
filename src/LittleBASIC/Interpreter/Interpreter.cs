@@ -89,6 +89,11 @@ namespace LittleBASIC.Interpreter
             }
             else if (node is ClsNode)
                 Console.Clear();
+            else if (node is PauseNode)
+            {
+                Console.WriteLine(((PauseNode)node).Message);
+                Console.ReadKey(true);
+            }
             else
                 evaluateNode(node);
         }

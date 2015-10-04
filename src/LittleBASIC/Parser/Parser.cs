@@ -77,6 +77,11 @@ namespace LittleBASIC.Parser
             return tokens[Position++];
         }
 
+        public Token ReadToken(int n = 0)
+        {
+            return tokens[Position + n];
+        }
+
         public Token CurrentToken(int n = 0)
         {
             if (tokens.Count > Position + n)

@@ -24,6 +24,8 @@ namespace LittleBASIC.Parser.Nodes
                 return GotoNode.Parse(parser);
             else if (parser.MatchToken(Lexer.TokenType.Identifier, "CLS"))
                 return ClsNode.Parse(parser);
+            else if (parser.MatchToken(Lexer.TokenType.Identifier, "PAUSE"))
+                return PauseNode.Parse(parser);
             else
                 return ExpressionNode.Parse(parser);
         }
