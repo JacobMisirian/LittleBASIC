@@ -53,6 +53,8 @@ namespace LittleBASIC.Interpreter
                 else if (!evaluates && cnode.Children.Count > 2)
                     executeStatement(cnode.ElseBody);
             }
+            else if (node is NumberNode)
+                Labels.Add(((NumberNode)node).Value.ToString(), position);
             else if (node is WhileNode)
             {
                 WhileNode wnode = (WhileNode)node;
