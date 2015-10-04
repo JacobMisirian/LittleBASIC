@@ -53,6 +53,7 @@
     <Compile Include="Parser\AstNode.cs" />
     <Compile Include="Parser\Nodes\ArgListNode.cs" />
     <Compile Include="Parser\Nodes\BinaryOpNode.cs" />
+    <Compile Include="Parser\Nodes\ClsNode.cs" />
     <Compile Include="Parser\Nodes\CodeBlockNode.cs" />
     <Compile Include="Parser\Nodes\ConditionalNode.cs" />
     <Compile Include="Parser\Nodes\EndNode.cs" />
