@@ -14,7 +14,7 @@ namespace LittleBASIC
         {
             //foreach (Token token in new Lexer.Lexer(File.ReadAllText("test.txt")).Tokenize())
               //  Console.WriteLine(token.TokenType + "\t" + token.Value);
-            new Interpreter.Interpreter(new Parser.Parser(new Lexer.Lexer(File.ReadAllText("test.txt")).Tokenize()).Parse()).Interpret();
+            new Interpreter.Interpreter(new Parser.Parser(new Lexer.Lexer(File.ReadAllText(args[0])).Tokenize()).Parse()).Interpret();
 
             Console.ReadKey();
         }

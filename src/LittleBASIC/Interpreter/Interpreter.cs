@@ -87,6 +87,8 @@ namespace LittleBASIC.Interpreter
 
                 Environment.Exit(enode.ExitCode);
             }
+            else if (node is ClsNode)
+                Console.Clear();
             else
                 evaluateNode(node);
         }
