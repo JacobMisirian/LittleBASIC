@@ -1,4 +1,2 @@
-10 PRINT EXP(4)
-' This is a comment
-GOTO 10
-PRINT "test"
+999 PRINT "Hello World"
+1 GOTO 999

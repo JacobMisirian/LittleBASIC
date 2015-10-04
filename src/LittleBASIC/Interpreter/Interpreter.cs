@@ -54,7 +54,12 @@ namespace LittleBASIC.Interpreter
                     executeStatement(cnode.ElseBody);
             }
             else if (node is NumberNode)
-                Labels.Add(((NumberNode)node).Value.ToString(), position);
+            {
+                string name = ((NumberNode)node).Value.ToString();
+                if (Labels.ContainsKey(name))
+                    Labels.Remove(name);
+                Labels.Add(name, position);
+            }
             else if (node is WhileNode)
             {
                 WhileNode wnode = (WhileNode)node;
