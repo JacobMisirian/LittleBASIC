@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Functions\StandardLibrary.cs" />
+    <Compile Include="Interactive.cs" />
     <Compile Include="Interpreter\IFunction.cs" />
     <Compile Include="Interpreter\ILibrary.cs" />
     <Compile Include="Interpreter\InternalFunction.cs" />

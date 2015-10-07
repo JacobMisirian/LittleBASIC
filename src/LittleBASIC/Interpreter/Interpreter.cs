@@ -40,10 +40,8 @@ namespace LittleBASIC.Interpreter
         private void executeStatement(AstNode node)
         {
             if (node is CodeBlockNode)
-            {
                 foreach (AstNode cnode in node.Children)
                     executeStatement(cnode);
-            }
             else if (node is ConditionalNode)
             {
                 ConditionalNode cnode = (ConditionalNode)node;
@@ -202,13 +200,12 @@ namespace LittleBASIC.Interpreter
                 testAss = Assembly.GetExecutingAssembly();
 
             foreach (Type type in testAss.GetTypes())
-            {
                 if (type.GetInterface(typeof(ILibrary).FullName) != null)
                 {
                     ILibrary ilib = (ILibrary)Activator.CreateInstance(type);
                     result.Add(ilib.GetFunctions());
                 }
-            }
+
             return result;
         }
     }
