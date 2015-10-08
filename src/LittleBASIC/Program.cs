@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using LittleBASIC.Lexer;
 
 namespace LittleBASIC
@@ -12,7 +12,7 @@ namespace LittleBASIC
     {
         static void Main(string[] args)
         {
-            if (args.Length <= 0)
+            if (args.Length <= 0) //
                 Interactive.Enter();
             else
                 new Interpreter.Interpreter(new Parser.Parser(new Lexer.Lexer(File.ReadAllText(args[0])).Tokenize()).Parse()).Interpret();

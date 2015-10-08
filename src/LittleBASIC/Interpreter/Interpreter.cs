@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using LittleBASIC.Parser;
 using LittleBASIC.Parser.Nodes;
 
@@ -23,6 +23,10 @@ namespace LittleBASIC.Interpreter
         private AstNode code { get; set; }
         private int position { get; set; }
 
+        public Interpreter()
+        {
+        }
+
         public Interpreter(AstNode code)
         {
             this.code = code;
@@ -35,6 +39,12 @@ namespace LittleBASIC.Interpreter
         {
             for (position = 0; position < code.Children.Count; position++)
                 executeStatement(code.Children[position]);
+        }
+
+        public void Interpret(AstNode code)
+        {
+            this.code = code;
+            Interpret();
         }
 
         private void executeStatement(AstNode node)

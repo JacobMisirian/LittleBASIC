@@ -35,12 +35,19 @@ namespace LittleBASIC
                         programs.Add(parts[1]);
                         break;
                     case "UNLOAD":
-                        if (!programs.Contains(parts[1]))
+                        if (!programs.Contains(parts[1]) || !programs.Contains(parts[1].ToUpper()))
                         {
                             Console.WriteLine("PROGRAM DOES NOT EXIST OR IS NOT LOADED!");
                             break;
                         }
-                        programs.Remove(parts[1]);
+                        try
+                        {
+                            programs.Remove(parts[1]);
+                        }
+                        catch
+                        {
+                            programs.Remove(parts[1].ToUpper());
+                        }
                         Console.WriteLine("PROGRAM UNLOADED!");
                         break;
                     case "LIST":
@@ -74,10 +81,18 @@ namespace LittleBASIC
                         Directory.SetCurrentDirectory(parts[1]);
                         Console.WriteLine("DIRECTORY CHANGED!");
                         break;
-                    case "EXP":
-                        if (parts.Length < 1)
+                    case "BASIC":
+                        while (true)
                         {
-                            Console.WriteLine("NOT ENOUGH ARGUMENTS!");
+                            Console.Write("? ");
+                            Interpreter.Interpreter interpret = new Interpreter.Interpreter();
+                            interpret.Interpret(new Parser.Parser(new Lexer.Lexer(Console.ReadLine()).Tokenize()).Parse());
+                        }
+                        break;
+                    case "EXP":
+                        if (parts.Length <= 1)
+                        {
+                            Console.WriteLine("NOT ENOUGH ARGUMENTS! EXP <COMMAND> OR EXP EXP");
                             break;
                         }
 
@@ -103,9 +118,13 @@ namespace LittleBASIC
                             case "CD":
                                 Console.WriteLine("CHANGES CURRENT WORKING DIRECTORY.");
                                 break;
+                            case "BASIC":
+                            case "REPL":
+                                Console.WriteLine("ALLOWS YOU TO PROGRAM IN LITTLEBASIC LINE BY LINE.");
+                                break;
                             case "EXP":
                             case "ALL":
-                                Console.WriteLine("QUIT  LOAD  UNLOAD  RUN\nCAT  CATALOG  QUIT  BYE\nCD  EXP");
+                                Console.WriteLine("QUIT  LOAD  UNLOAD  RUN\nCAT  CATALOG  QUIT  BYE\nCD  EXP  BASIC");
                                 break;
                             default:
                                 Console.WriteLine("UNKNOWN COMMAND. USE EXP EXP TO SHOW ALL");
